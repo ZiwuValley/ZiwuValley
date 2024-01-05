@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>A Summary of $\mathbf{QIP}=\mathbf{PSPACE}$ - ZiwuValley&#039;s Blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ZiwuValley&#039;s Blog"><meta name="msapplication-TileImage" content="/img/lhc.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ZiwuValley&#039;s Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="This article notes the famous paper QIP&amp;#x3D;PSPACE1 written by Rahul, Zhengfeng, Sarvagya and Watrous. This semester I have a course named Introduction to Theoretical Computer Science requiring students t"><meta property="og:type" content="blog"><meta property="og:title" content="A Summary of $\mathbf{QIP}=\mathbf{PSPACE}$"><meta property="og:url" content="https://ziwuvalley.github.io/Theoretical-Computer-Science/QIP-PSPACE/"><meta property="og:site_name" content="ZiwuValley&#039;s Blog"><meta property="og:description" content="This article notes the famous paper QIP&amp;#x3D;PSPACE1 written by Rahul, Zhengfeng, Sarvagya and Watrous. This semester I have a course named Introduction to Theoretical Computer Science requiring students t"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://ziwuvalley.github.io/img/og_image.png"><meta property="article:published_time" content="2024-01-05T07:00:15.000Z"><meta property="article:modified_time" content="2024-01-05T14:17:39.367Z"><meta property="article:tag" content="Quantum Computing"><meta property="article:tag" content="Complexity Theory"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://ziwuvalley.github.io/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://ziwuvalley.github.io/Theoretical-Computer-Science/QIP-PSPACE/"},"headline":"A Summary of $\\mathbf{QIP}=\\mathbf{PSPACE}$","image":["https://ziwuvalley.github.io/img/og_image.png"],"datePublished":"2024-01-05T07:00:15.000Z","dateModified":"2024-01-05T14:17:39.367Z","author":{"@type":"Person","name":""},"publisher":{"@type":"Organization","name":"ZiwuValley's Blog","logo":{"@type":"ImageObject","url":"https://ziwuvalley.github.io/img/lhc.svg"}},"description":"This article notes the famous paper QIP&#x3D;PSPACE1 written by Rahul, Zhengfeng, Sarvagya and Watrous. This semester I have a course named Introduction to Theoretical Computer Science requiring students t"}</script><link rel="canonical" href="https://ziwuvalley.github.io/Theoretical-Computer-Science/QIP-PSPACE/"><link rel="icon" href="/img/lhc.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.loli.net/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/lhc.svg" alt="ZiwuValley&#039;s Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-01-05T07:00:15.000Z" title="2024/1/5 15:00:15">2024-01-05</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-01-05T14:17:39.367Z" title="2024/1/5 22:17:39">2024-01-05</time></span><span class="level-item"><a class="link-muted" href="/categories/Theoretical-Computer-Science/">Theoretical Computer Science</a></span><span class="level-item">35 minutes read (About 5277 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">A Summary of $\mathbf{QIP}=\mathbf{PSPACE}$</h1><div class="content"><p>This article notes the famous paper <em>QIP=PSPACE</em><a href="#RZSW11"><sup>1</sup></a> written by Rahul, Zhengfeng, Sarvagya and Watrous.</p>
+<p>This semester I have a course named <em>Introduction to Theoretical Computer Science</em> requiring students to pick a conference paper about TCS and summarize it. Hence I write this article for this project.</p>
+<span id="more"></span>
+<h2 id="1-Background"><a href="#1-Background" class="headerlink" title="1. Background"></a>1. Background</h2><p>Let’s begin with $\mathbf{P}$ and $\mathbf{NP}$, the two widely known complexity classes. Suppose you are trying to solve some decision problems. You can solve some of them independently whereas you can’t solve other problems independently. In the second case, you may find an answer on the Internet(e.g. StackExchange) and convince yourself that the answer is reliable. Thus we can intuitively define the two complexity classes. $\mathbf{P}$ represents a collection of decision problems that can be solved efficiently(i.e. in polynomial time) and $\mathbf{NP}$ represents a collection of decision problems that you can efficiently verify the answer given by someone.</p>
+<p>Nevertheless, here comes a problem you can’t even efficiently verify the answer given by the prover. In this case, you have to keep asking the prover some questions randomly. What’s more, some provers may be dishonest, i.e. they may cheat on you. As a verifier, you need to consider the completeness and soundness of your interactive proof system, that is, accepting a yes-instance with high probability and rejecting a no-instance with low probability, respectively. Thus we can define the complexity class $\mathbf{IP}$ as a collection of decision problems that have an interactive proof system. This concept was introduced by Babai<a href="#BM88"><sup>2</sup></a> and Goldwasser<a href="#GS86"><sup>3</sup></a> et al..</p>
+<p>It’s trivial to see that $\mathbf{P}\subseteq\mathbf{NP}\subseteq\mathbf{IP}$, but what is the upper bound of the computational model $\mathbf{IP}$? Feldman<a href="#S96"><sup>4</sup></a> proved the containment $\mathbf{IP}\subseteq \mathbf{PSPACE}$ and Shamir<a href="#S92"><sup>5</sup></a> proved the reverse containment $\mathbf{PSPACE}\subseteq \mathbf{IP}$. Hence we have equality $\mathbf{IP}=\mathbf{PSPACE}$. In other words, the decision problems in $\mathbf{IP}$ can be solved in polynomial space instead of time.</p>
+<p>The discussion above is only based on classically computational models. What if the verifier can use quantum circuits? Moreover, what if the prover and the verifier can send qubits to each other? Watrous<a href="#W03"><sup>6</sup></a> first introduced the complexity class $\mathbf{QIP}$ which is a quantum analog of $\mathbf{IP}$ and proved that $\mathbf{PSPACE}$ has constant-round quantum interactive proof systems which straightforward leads to $\mathbf{IP}=\mathbf{PSPACE}\subseteq\mathbf{QIP}$. Furthermore, Marriott and Watrous<a href="#MW05"><sup>7</sup></a> found a very simple form of quantum interactive proof systems, named quantum Arthur-Merlin games. That will be useful for us to analyze quantum interactive proof systems.</p>
+<p>Before Rahul<a href="#RZSW111"><sup>1</sup></a> et al. proved $\mathbf{QIP}\subseteq\mathbf{PSPACE}$, the best upper bound $\mathbf{QIP}\subseteq\mathbf{EXP}$ had been proved by Kitaev and Watrous<a href="#KW00"><sup>8</sup></a> through the use of semidefinite programming, which will be used to prove $\mathbf{QIP}\subseteq\mathbf{PSPACE}$ as well. Therefore Rahul<a href="#RZSW11"><sup>1</sup></a> et al. proved $\mathbf{QIP}\subseteq\mathbf{PSPACE}$, which implies $\mathbf{QIP}=\mathbf{PSPACE}=\mathbf{IP}$. Hence introducing quantum resources cannot improve the computational ability of interactive proof systems.</p>
+<h2 id="2-Preliminaries"><a href="#2-Preliminaries" class="headerlink" title="2. Preliminaries"></a>2. Preliminaries</h2><p>This section will strictly define some concepts. All the content of this section is from the original paper.</p>
+<h3 id="2-1-Linear-Algebra"><a href="#2-1-Linear-Algebra" class="headerlink" title="2.1 Linear Algebra"></a>2.1 Linear Algebra</h3><p>We won’t talk about a bunch of basic concepts of Linear Algebra here.</p>
+<p>Let scripted letters such as $\mathcal{V,X,Y}$ denote finite-dimensional complex vector spaces taking the form $\mathbb{C}^{\Sigma}\cong \mathbb{C}^{N}$ for some finite nonempty index set $|\Sigma|=N$. </p>
+<p>The space of all linear operators from $\mathcal{V}$ to $\mathcal{V}$ is denoted $\mathrm{L}(\mathcal{V})$. Generally, we regard $\Sigma$ as an orthonormal basis for $\mathcal{V}$, so for a linear operator $A\in\mathrm{L}$, the rows and columns of the matrix representation of $A$ are indexed by $\Sigma$. The identity operator from $\mathcal{V}$ to $\mathcal{V}$ is denoted by $I_{\mathcal{V}}$.</p>
+<p>The inner product on $\mathrm{L}(\mathcal{V})$ is defined as</p>
+<script type="math/tex; mode=display">
+\langle A,B\rangle\colon=\operatorname{Tr}(A^{\dagger}B),A,B\in\mathrm{L}(\mathcal{V}).</script><p>The collection of all Hermitian operators from $\mathcal{V}$ to $\mathcal{V}$ is denoted $\mathrm{Herm}(\mathcal{V})$. The collection of all positive semidefinite operators from $\mathcal{V}$ to $\mathcal{V}$ is denoted $\mathrm{Pos}(\mathcal{V})$. The collection of all density operators(i.e. a positive semidefinite operator having unit trace) is denoted $\mathrm{D}(\mathcal{V})$.</p>
+<p>We say two operators $A\le B$ iff. $A-B\in\mathrm{Pos}(\mathcal{V})$.</p>
+<p>The eigenvalues of a Hermitian operator $H$ are all real, thus we can denote its maximal eigenvalue and minimal eigenvalue by $\lambda_{\max}(H)$ and $\lambda_{\min}(H)$, respectively.</p>
+<p>The spectral norm of an operator $A\in\mathrm{L}(\mathcal{V})$ is defined as</p>
+<script type="math/tex; mode=display">
+\| A\|\colon=\max\{\|Au\|:u\in\mathcal{V},\|u\|=1\}=\sqrt{\lambda_{\max}(A^{\dagger}A)}.</script><p>The negative eigenspace of a Hermitian operator $A\in\mathrm{Herm}(\mathcal{V})$ is spanned by all vector $u\in\mathcal{V}$ that is an eigenvector of $A$ having an associated eigenvalue that is negative.</p>
+<p>The exponential of an operator $A\in\mathrm{L}(\mathcal{V})$ is defined as</p>
+<script type="math/tex; mode=display">
+\exp(A)\colon=\sum_{n=0}^{+\infty}\frac{A^n}{n!}.</script><h3 id="2-2-Quantum-Information"><a href="#2-2-Quantum-Information" class="headerlink" title="2.2 Quantum Information"></a>2.2 Quantum Information</h3><p>It’s unnecessary to clarify what Quantum Information is in light of proving $\mathbf{QIP}=\mathbf{PSPACE}$. We only need to know some basic concepts.</p>
+<p>A quantum register is a finite and nonempty sequence of qubits. We use sans serif font(e.g. $\mathsf{X},\mathsf{Y}$) to denote a quantum register.</p>
+<p>When a quantum register $\mathsf{X}$ consists of $m$ qubits we say that $\mathsf{X}$ is an $m$-qubit register, and in this case it has an associated vector space $\mathcal{X}=\mathbb{C}^{\{0,1\}^{m}}$. Moreover, its possible quantum states correspond to $\mathrm{D}(\mathcal{X})$. We use lower-case Greek letters like $\rho,\sigma$ to represent a quantum state.</p>
+<p>A measurement on $\mathsf{X}$ is a finite collection of positive semidefinite operators $\{P_b:b\in\Gamma\}$ satisfying</p>
+<script type="math/tex; mode=display">
+\sum_{b\in\Gamma}P_b=I_{\mathcal{X}}.</script><p>The set $\Gamma$ is the set of measurement outcomes. For any outcome $b\in\Gamma$, it occurs with probability $\langle P_b,\rho \rangle$ where the quantum state of $\mathsf{X}$ is $\rho$.</p>
+<p>We can compose two or more registers and denote them by tensor product $\otimes$. For registers $\mathsf{X}$ and $\mathsf{Y}$ having associated spaces $\mathcal{X}$ and $\mathcal{Y}$, we have that the space associated with the pair $(\mathsf{X},\mathsf{Y})$ is $\mathcal{X}\otimes\mathcal{Y}$. If $\mathsf{X}$ and $\mathsf{Y}$ are prepared independently in the quantum states $\rho\in\mathrm{D}(\mathcal{X})$ and $\sigma\in\mathrm{D}(\mathcal{Y})$, then the state of $(\mathsf{X},\mathsf{Y})$ is $\rho\otimes\sigma\in\mathrm{D}(\mathcal{X}\otimes\mathcal{Y})$. But some $\zeta\in\mathrm{D}(\mathcal{X}\otimes\mathcal{Y})$ may not be separable, and in that case, we say $\mathsf{X}$ and $\mathsf{Y}$ are in entanglement. Entanglement is one of the most important and distinguished features of Quantum Information.</p>
+<p>We also want to extract $\mathsf{X}$’s information from the pair $(\mathsf{X},\mathsf{Y})$. There is a uniquely determined reduced state of $\mathsf{X}$. In mathematical terms, the reduced state is defined by the partial trace over $\mathcal{Y}$, which is a linear mapping $\operatorname{Tr}_{\mathcal{Y}}$ from $\mathrm{L}(\mathcal{X}\otimes\mathcal{Y})$ to $\mathrm{L}(\mathcal{X})$ satisfying $\operatorname{Tr}_{\mathcal{Y}}(A\otimes B)=\operatorname{Tr}(B)A$ for every $A\in\mathrm{L}(\mathcal{X})$ and $B\in\mathrm{L}(\mathcal{Y})$. Thus we have $\langle A,\operatorname{Tr}_{\mathcal{Y}}(B)\rangle=\langle A\otimes I_{\mathcal{Y}},B\rangle$ for every $A\in\mathrm{L}(\mathcal{X})$ and $B\in\mathrm{L}(\mathcal{X}\otimes\mathcal{Y})$.</p>
+<p>Transformations of quantum registers are vital as well. A transformation of a quantum register can be described by a unitary operator $U$. If a register $\mathsf{X}$ is in a state $\rho\in\mathrm{D}(\mathcal{X})$, and a transformation described by a unitary operator $U\in\mathrm{L}(\mathcal{X})$ is performed on this register, its state becomes $U\rho U^{\dagger}$.</p>
+<h3 id="2-3-Quantum-Interactive-Proof-Systems-and-Single-Coin-Arthur-Merlin-Games"><a href="#2-3-Quantum-Interactive-Proof-Systems-and-Single-Coin-Arthur-Merlin-Games" class="headerlink" title="2.3 Quantum Interactive Proof Systems and Single-Coin Arthur-Merlin Games"></a>2.3 Quantum Interactive Proof Systems and Single-Coin Arthur-Merlin Games</h3><p>We have known quantum interactive proof systems, however, it’s too complicated to analyze. Luckily, Marriot and Watrous<a href="#MW05"><sup>7</sup></a> proved that it is always possible to transform a given quantum interactive proof system into a Quantum Merlin-Arthur-Merlin game, which is conceptually simpler.</p>
+<p>Let $p$ denote a polynomial, which is independent of the input and fixed, and $x$ denote the input string. In each round, the prover can send an $m$-qubit register to the verifier, for $m=p(n)$, where $n=\left|x \right|$ is the length of the input string. Note that it’s not necessary to restrict all registers to have the same length. Therefore the transformed proof system has the following form.</p>
+<ol>
+<li>The prover sends an $m$-qubit register $\mathsf{X}$ to the verifier and the verifier cannot interact with this register.</li>
+<li>The verifier generates a bit $a\in\{0,1\}$ uniformly at random and sends it to the prover.</li>
+<li>The prover sends an $m$-qubit register $\mathsf{Y}$ to the verifier.</li>
+<li>The verifier measures the pair $(\mathsf{X},\mathsf{Y})$ by one of two binary-outcome measurements: $\{\Pi_{0}^0,\Pi_{1}^{0} \}$ in case $a=0$ and $\{\Pi_{0}^{1},\Pi_{1}^{1} \}$ in case $a=1$. The verifier accepts if the outcome is $1$ otherwise it rejects.</li>
+</ol>
+<p>Note that the measurements should be implemented efficiently, that is, applying a polynomial number of quantum gates(say, a certain universal set of quantum gates) to the $2m$ qubits. </p>
+<p>Marriot and Watrous<a href="#MW05"><sup>7</sup></a> showed that its completeness is perfect and its soundness error is bounded by $1/2+\varepsilon$ for any desired constant $\varepsilon&gt;0$.</p>
+<h3 id="2-4-Bounded-Depth-Circuits-and-the-Complexity-Classes-mathbf-NC-and-mathbf-NC-poly"><a href="#2-4-Bounded-Depth-Circuits-and-the-Complexity-Classes-mathbf-NC-and-mathbf-NC-poly" class="headerlink" title="2.4 Bounded-Depth Circuits and the Complexity Classes $\mathbf{NC}$ and $\mathbf{NC}(poly)$"></a>2.4 Bounded-Depth Circuits and the Complexity Classes $\mathbf{NC}$ and $\mathbf{NC}(poly)$</h3><p>To evaluate the computational ability of parallel computers, theorists define $\mathbf{NC}$ as a collection of functions that can be computed in polylogarithmic time by a parallel computer with a polynomial number of processors and $\mathbf{NC}(poly)$ as a collection of functions that can be computed in polynomial time by a parallel computer with an exponential number of processors.</p>
+<p>The proof will make use of the fact that $\mathbf{NC}(poly)=\mathbf{PSPACE}$, which came from a more general result of Borodin<a href="#B77"><sup>9</sup></a>.</p>
+<p>Another fact of these complexity classes is they compose well. Specifically, if a decision problem $F\in\mathbf{NC}(poly)$ and another decision problem $G\in\mathbf{NC}$, then $G\circ F\in\mathbf{NC}(poly)$.</p>
+<h3 id="2-5-Semidefinite-Programs"><a href="#2-5-Semidefinite-Programs" class="headerlink" title="2.5 Semidefinite Programs"></a>2.5 Semidefinite Programs</h3><p>In fact, we don’t need to know too much about semidefinite programs. We only need to know we can iteratively shrink the bound of the optimum of it and its dual problem by Matrix Multiplicative Weight Algorithm, which has an $\mathbf{NC}(poly)$ implementation.</p>
+<h2 id="3-The-Main-Idea"><a href="#3-The-Main-Idea" class="headerlink" title="3. The Main Idea"></a>3. The Main Idea</h2><p>After the tedious preparation, the main idea comes. Let’s check it out.</p>
+<h3 id="3-1-Semidefinite-Programs-for-Single-Coin-Quantum-Arthur-Merlin-Games"><a href="#3-1-Semidefinite-Programs-for-Single-Coin-Quantum-Arthur-Merlin-Games" class="headerlink" title="3.1 Semidefinite Programs for Single-Coin Quantum Arthur-Merlin Games"></a>3.1 Semidefinite Programs for Single-Coin Quantum Arthur-Merlin Games</h3><p>Recall that there is a transformed proof system that accepts a yes-instance with probability $1$ whereas it accepts a no-instance with probability $1/2+\epsilon$ for any desired constant $\epsilon&gt;0$. Hence if we find a strategy that makes the verifier accept with a probability greater than $1/2+\epsilon$ for the prover, we can determine that the input is a no-instance otherwise it is a yes-instance.</p>
+<p>It can be naturally described as an optimization problem, more specifically, a semidefinite program. Depending on the verifier’s random bit $a$, the state of the pair $(\mathsf{X},\mathsf{Y})$ may be $\rho_0,\rho_1\in\mathrm{D}(\mathcal{X},\mathcal{Y})$. Since the prover cannot do anything to the register $\mathsf{X}$ after he/she knows $a$, we have a constraint $\operatorname{Tr}_{\mathcal{Y}}(\rho_0)=\operatorname{Tr}_{\mathcal{Y}}(\rho_1)$. Therefore we are going to describe the probability that the verifier accepts. Suppose that the verifier’s measurements are $\{\Pi_{0}^{0},\Pi_{1}^{0}\}$ and $\{\Pi_{0}^{1},\Pi_{1}^{1}\}$, thus, the probability that the verifier accepts is</p>
+<script type="math/tex; mode=display">
+\frac{1}{2}\langle \Pi_{1}^{0},\rho_0\rangle+\frac{1}{2}\langle\Pi_{1}^{1},\rho_1\rangle.</script><p>Hence, the optimization problem is to maximize this probability. However, the constraint here is too tough to deal with. We need to relax this constraint. An optimization problem with the same optimum $u$ is to maximize the quantity</p>
+<script type="math/tex; mode=display">
+\frac{1}{2}\langle\Pi_{1}^{0},Q_0\rangle+\frac{1}{2}\langle\Pi_{1}^{1},Q_1\rangle,</script><p>over all operators $Q_0,Q_1\in\mathrm{Pos}(\mathcal{X}\otimes\mathcal{Y}),\xi\in\mathrm{D}(\mathcal{X})$ such that $\operatorname{Tr}_{\mathcal{Y}}(Q_0)\le\xi$ and $\operatorname{Tr}_{\mathcal{Y}}(Q_1)\le \xi$.</p>
+<p>Moreover, for a positive number $\alpha$, define two operators $P_0=\Pi_{1}^{0}+\alpha\Pi_{0}^{0},P_1=\Pi_{1}^{1}+\alpha\Pi_{0}^{1}$. They are semidefinite positive and invertible since $P_{0}^{-1}=\Pi_{1}^{0}+\Pi_{0}^{0}/\alpha,P_{1}^{-1}=\Pi_{1}^{1}+\Pi_{0}^{1}/\alpha$. We have the maximum value of the quantity</p>
+<script type="math/tex; mode=display">
+\frac{1}{2}\langle P_{0}^{-2},Q_0\rangle+\frac{1}{2}\langle P_{1}^{-2},Q_1\rangle</script><p>is in $[u,u+1/\alpha^2]$. Since $\langle P_{0}^{-2},Q_0\rangle=\operatorname{Tr}(P_{0}^{-2}Q_0)=\operatorname{Tr}(P_{0}^{-1}Q_0P_{0}^{-1})$ and the mapping $T:Q_0\mapsto P_{0}^{-1}Q_0P_{0}^{-1}$ is bijective, by change-of-variables, we get a simpler form of this optimization problem with its dual problem:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    &\quad\underline{\text{Primal Problem}}\\
+    \max&\quad\operatorname{Tr}\bigg(\frac{1}{2}Q_0+\frac{1}{2}Q_1\bigg)\\
+    s.t.&\quad\operatorname{Tr}_{\mathcal{Y}}(P_0Q_0P_0)\le\xi,\\
+        &\quad\operatorname{Tr}_{\mathcal{Y}}(P_1Q_1P_1)\le\xi,\\
+        &\quad Q_0,Q_1\in\mathrm{Pos}(\mathcal{X}\otimes\mathcal{Y}),\\
+        &\quad\xi\in\mathrm{D}(\mathcal{X}).
+\end{aligned}
+\qquad\qquad\qquad\qquad\qquad
+\begin{aligned}
+    &\quad\underline{\text{Dual Problem}}\\
+    \min&\quad\|\frac{1}{2}R_0+\frac{1}{2}R_1 \|\\
+    s.t.&\quad P_0(R_0\otimes I_{\mathcal{Y}})P_0\ge I_{\mathcal{X}}\otimes I_{\mathcal{Y}},\\
+        &\quad P_1(R_1\otimes I_{\mathcal{Y}})P_1\ge I_{\mathcal{X}}\otimes I_{\mathcal{Y}},\\
+        &\quad R_0,R_1\in\mathrm{Pos}(\mathcal{X}).
+\end{aligned}</script><p>For every $(Q_0,Q_1,\xi)$ and $(R_0,R_1)$ obtainable, the weak duality holds, that is</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \operatorname{Tr}\bigg{(}\frac{1}{2}Q_0+\frac{1}{2}Q_1 \bigg{)}&= \frac{1}{2}\langle I_{\mathcal{X}}\otimes I_{\mathcal{Y}},Q_0 \rangle+\frac{1}{2}\langle I_{\mathcal{X}}\otimes I_{\mathcal{Y}},Q_1 \rangle\\
+    &\le \frac{1}{2}\langle P_0(R_0\otimes I_{\mathcal{Y}})P_0,Q_0\rangle+\frac{1}{2}\langle P_{1}(R_1\otimes I_{\mathcal{Y}})P_1,Q_1\rangle\\
+    &=\frac{1}{2}\langle R_0,\operatorname{Tr}_{\mathcal{Y}}(P_0Q_0P_0)\rangle+\frac{1}{2}\langle R_1,\operatorname{Tr}_{\mathcal{Y}}(P_1Q_1P_1)\rangle\\
+    &\le \frac{1}{2}\langle R_0,\xi\rangle+\frac{1}{2}\langle R_1,\xi\rangle\\
+    &=\langle\frac{1}{2}R_0+\frac{1}{2}R_1,\xi\rangle\\
+    &\le \|\frac{1}{2}R_0+\frac{1}{2}R_1 \|.
+\end{aligned}</script><p>The last inequality can be proved by the spectral decomposition of $\xi$.</p>
+<h3 id="3-2-Matrix-Multiplicative-Weight-Algorithm-for-Semidefinite-Programs"><a href="#3-2-Matrix-Multiplicative-Weight-Algorithm-for-Semidefinite-Programs" class="headerlink" title="3.2 Matrix Multiplicative Weight Algorithm for Semidefinite Programs"></a>3.2 Matrix Multiplicative Weight Algorithm for Semidefinite Programs</h3><p>Matrix multiplicative weight algorithm is usually used to approximately solve semidefinite programming. Here we need to slightly modify it so that it can be suitable for our problems.</p>
+<p>First, we set some values</p>
+<script type="math/tex; mode=display">
+M=2^m,\quad\alpha=4,\quad\gamma=\frac{4}{3},\quad \varepsilon=\frac{1}{64},\quad\text{and}\quad \delta=\frac{\varepsilon}{\alpha^2 }.</script><p>When the optimal value of this semidefinite program is at least $1$, we can determine that the verifier will accept. When the optimal value of it is at most $1/2+\varepsilon+1/\alpha^2&lt;5/8$, we can determine that the verifier will reject.</p>
+<p>Rahul et al. used the matrix multiplicative weight algorithm to solve this problem. The algorithm can be described as follows.</p>
+<ul>
+<li><p>Compute</p>
+<script type="math/tex; mode=display">
+P_a=\Pi_{1}^{a}+\alpha\Pi_{0}^{a},\quad X_{a}^{(0)}=I_{\mathcal{X}\otimes\mathcal{Y}},\quad\text{and}\quad \rho_{a}^{(0)}=\frac{X_{a}^{(0)}}{\operatorname{Tr}(X_{0}^{(0)}+X_{1}^{(0)})}</script><p>for $a\in\{0,1\}$, and compute</p>
+<script type="math/tex; mode=display">
+ Y_{0}^{(0)}=I_{\mathcal{X}},\quad \sigma^{(0)}=\frac{Y^{(0)}}{\operatorname{Tr}(Y^{(0)})},\quad\text{and}\quad T=\lceil\frac{4\ln M}{\varepsilon^{2}\delta}\rceil.</script></li>
+<li><p>Repeat the following steps for each $t$ from $0$ to $T-1$:</p>
+<ul>
+<li><p>Compute</p>
+<script type="math/tex; mode=display">
+Z_{a}^{(t)}=\frac{\gamma}{2}\sigma^{(t)}-\operatorname{Tr}_{\mathcal{Y}}(P_a\rho_aP_a)</script><p>and compute the projection $\Delta_{a}^{(t)}$ onto the negative eigenspace of $Z_{a}^{(t)}$, for $a\in\{0,1\}$.</p>
+</li>
+<li><p>Compute</p>
+<script type="math/tex; mode=display">
+\beta^{(t)}=\langle\Delta_{0}^{(t)}\otimes I_{\mathcal{Y}},P_0\rho_0^{(t)}P_0\rangle+\langle\Delta_{1}^{(t)}\otimes I_{\mathcal{Y}},P_1\rho_1^{(t)}P_1\rangle.</script><p>If $\beta^{(t)}\le\varepsilon$, accept and exit. We claim that $(2\rho_{0}^{(t)},2\rho_{1}^{(t)},\sigma^{(t)})$ is close to a feasible solution to the primal problem.</p>
+</li>
+<li><p>Compute</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    X_{a}^{(t+1)}&=\exp\bigg{(}-\sum_{j=0}^{t}\frac{\varepsilon\delta}{\beta^{(j)}}P_a(\Delta_{a}^{(j)}\otimes I_{\mathcal{Y}})P_a \bigg{)}\\
+    \rho_{a}^{(t+1)}&=\frac{X_{a}^{(t+1)}}{\operatorname{Tr}(X_{0}^{(t+1)}+X_{1}^{(t+1)})}
+\end{aligned}</script><p>for $a\in\{0,1\}$ and </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    Y^{(t+1)}&=\exp\bigg{(}\sum_{j=0}^{t}\frac{\varepsilon^2}{2\beta^{(j)}}(\Delta_0^{(j)}+\Delta_1^{(j)}) \bigg{)}\\
+    \sigma^{(t+1)}&=\frac{Y^{(t+1)}}{\operatorname{Tr}(Y^{(t+1)})}.
+\end{aligned}</script></li>
+</ul>
+</li>
+<li><p>Reject. We claim that $(\sum_{t=0}^{T-1}\Delta_{0}^{(t)}/\beta^{(t)},\sum_{t=0}^{T-1}\Delta_1^{(t)}/\beta^{(t)})$ is close to a feasible solution to the dual problem.</p>
+</li>
+</ul>
+<h2 id="4-Analysis"><a href="#4-Analysis" class="headerlink" title="4. Analysis"></a>4. Analysis</h2><h3 id="4-1-Complexity"><a href="#4-1-Complexity" class="headerlink" title="4.1 Complexity"></a>4.1 Complexity</h3><p>We claim that this algorithm has an $\mathbf{NC}(poly)$ implementation. Here we won’t dive into those details, which you can find in the original paper. In addition, I can’t find some references in the original paper, so I won’t mention them.</p>
+<p>First, it is important to stress that those problems, which are sums, products, tensor products, inverses, and iterated sums and products of matrices, are known to be in $\mathbf{NC}$.</p>
+<p>Therefore, those measurements of the verifier can be computed in $\mathbf{NC}(poly)$ since they can be decomposed into a polynomial number of quantum gates. We can compute all the matrices parallelly in $\mathbf{NC}(poly)$ and then compute their product in $\mathbf{NC}$.</p>
+<p>Finally, we can approximately compute the exponential of a given matrix and the projection onto the negative eigenspace of a given matrix in $\mathbf{NC}$. </p>
+<p>Given an $n\times n$ matrix $A$ satisfying $|A|\le k$ with a given integer, we can directly truncate the series</p>
+<script type="math/tex; mode=display">
+\exp(A)=\sum_{k\ge 0}\frac{A^k}{k!}</script><p>to a number of terms linear in $k+\ln(1/\varepsilon)$ with the error bound $\varepsilon$. </p>
+<p>We can also approximately compute roots of integer polynomials<a href="#BFK86"><sup>10</sup></a> and characteristic polynomials of matrices<a href="#C75"><sup>11</sup></a> in $\mathbf{NC}$. It provides us with an $\mathbf{NC}$ algorithm to approximately compute the negative eigenspace of a given matrix.</p>
+<p>After all, we implement this algorithm in $\mathbf{NC}(poly)=\mathbf{PSPACE}$.</p>
+<h3 id="4-2-Accuracy"><a href="#4-2-Accuracy" class="headerlink" title="4.2 Accuracy"></a>4.2 Accuracy</h3><h4 id="4-2-0-Some-Useful-Theorems-and-Lemmas"><a href="#4-2-0-Some-Useful-Theorems-and-Lemmas" class="headerlink" title="4.2.0 Some Useful Theorems and Lemmas"></a>4.2.0 Some Useful Theorems and Lemmas</h4><p>To better analyze the accuracy, we need to use some theorems and lemmas.</p>
+<blockquote>
+<p><strong>THEOREM 1(Golden-Thompson Inequality).</strong> </p>
+<p>For any Hermitian operators $A,B\in\mathrm{Herm}(\mathcal{V})$, the inequality</p>
+<script type="math/tex; mode=display">
+\operatorname{Tr}[\exp(A+B)]\le \operatorname{Tr}[\exp(A)\exp(B)]</script><p>holds.</p>
+<p>The proof can be found in <em>Matrix Analysis</em><a href="#BR97"><sup>12</sup></a>.</p>
+<p><strong>LEMMA 1.</strong> Let $R\in\mathrm{Pos}(\mathcal{V})$ be a positive semidefinite operator satisfying $R\le I_{\mathcal{V}}$. For every real number $\eta$, it holds that</p>
+<script type="math/tex; mode=display">
+\exp(\eta R)\le I_{\mathcal{V}}+\eta\exp(\eta)R</script><p><strong>PROOF. </strong> Consider each term in the spectral decomposition of $R$ separately. Then we can decompose $I_{\mathcal{V}}$ into the projections onto the eigenspaces of $R$. Hence we only need to prove that</p>
+<script type="math/tex; mode=display">
+\exp(\eta\lambda)\le 1+\eta\exp(\eta)\lambda,\qquad\qquad\forall\lambda\in[0,1].</script><p>The case $\lambda=0$ is trivial. For $\lambda\in(0,1]$, by the Mean Value Theorem, we have that</p>
+<script type="math/tex; mode=display">
+\frac{\exp(\eta\lambda)-1}{\lambda}=\eta\exp(\eta\lambda_0)\le \eta\exp\eta,\qquad\text{for some }\lambda_0\in[0,1].</script><p><strong>LEMMA 2(Bounds for Matrix Multiplicative Weight Algorithm).</strong> </p>
+<p>Let $T$ be a positive integer, $M^{(0)},M^{(1)},\cdots,M^{(t-1)}\in\mathrm{Pos}(\mathcal{V})$ be operators on a space $\mathcal{V}=\mathbb{C}^{N}$ satisfying $0\le M^{(t)}\le I_{\mathcal{V}}$ for each $t\in\{0,\cdots,T-1 \}$, and $\varepsilon&gt;0$ be a positive number. Then the two inequalities hold:</p>
+<ul>
+<li><p>For</p>
+<script type="math/tex; mode=display">
+X^{(0)}=I_{\mathcal{V}},\quad X^{(t+1)}=\exp\bigg{(}-\varepsilon\sum_{k=0}^{t}M^{(k)} \bigg{)},\quad \text{and}\quad \rho^{(t)}=\frac{X^{(t)}}{\operatorname{Tr}(X^{(t)})}</script><p>for each $t\in\{0,\dots,T-1 \}$, we have that</p>
+<script type="math/tex; mode=display">
+\lambda_{\min}\bigg{(}\sum_{t=0}^{T-1}M^{(t)} \bigg{)}\ge \exp(-\varepsilon)\sum_{t=0}^{T-1}\bigg\langle\rho^{(t)},M^{(t)} \bigg\rangle-\frac{\ln N}{\varepsilon}.</script></li>
+<li><p>For</p>
+<script type="math/tex; mode=display">
+Y^{(0)}=I_{\mathcal{V}},\quad Y^{(t+1)}=\exp\bigg{(}\varepsilon\sum_{k=0}^{t}M^{(k)} \bigg{)},\quad \text{and}\quad \sigma^{(t)}=\frac{Y^{(t)}}{\operatorname{Tr}(Y^{(t)})}</script><p>for each $t\in\{0,\cdots,T-1\}$, we have that</p>
+<script type="math/tex; mode=display">
+\lambda_{\max}\bigg{(}\sum_{t=0}^{T-1}M^{(t)} \bigg{)}\le \exp(\varepsilon)\sum_{t=0}^{T-1}\bigg\langle\sigma^{(t)},M^{(t)}\bigg\rangle+\frac{\ln N}{\varepsilon}.</script></li>
+</ul>
+<p><strong>PROOF.</strong> We prove the first inequality and readers can prove the second one similarly. The main idea is to consider the trace of the sum of $M^{(t)}$ as a bridge between the two sides of the inequality. More specifically, since the operator $X^{(T)}$ is positive semidefinite, we have</p>
+<script type="math/tex; mode=display">
+\operatorname{Tr}\big(X^{(T)}\big)\ge \lambda_{\min}\big(X^{(T)}\big)=\lambda_{\min}\bigg{(}\exp\bigg(-\varepsilon\sum_{t=0}^{T-1}M^{(k)} \bigg)\bigg{)}=\exp\bigg(-\varepsilon\lambda_{\min}\bigg(\sum_{t=0}^{T-1}M^{(k)} \bigg)\bigg).</script><p>Then we apply Golden-Thompson inequality to evaluate $\operatorname{Tr}(X^{(T)})$, so for any $t\in\{0,\cdots,T-1\}$ we have</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \operatorname{Tr}\big(X^{(t+1)}\big)&\le\operatorname{Tr}\big(X^{(t)}\exp(-\varepsilon M^{(t)})\big).
+    &
+\end{aligned}</script><p>According to <strong>LEMMA 1</strong>, we have $\exp(-\varepsilon M^{(t)})\le I_{\mathcal{V}}-\varepsilon\exp(-\varepsilon)M^{(t)}$. Therefore, we conclude that</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \operatorname{Tr}\big(X^{(t+1)}\big)&\le \operatorname{Tr}\big(X^{(t)}-\varepsilon\exp(-\varepsilon)X^{(t)}M^{(t)}\big)\\
+    &=\operatorname{Tr}\big(X^{(t)}\big)\bigg{(}1-\varepsilon\exp(-\varepsilon)\operatorname{Tr}\big(\frac{X^{(t)}}{\operatorname{Tr}\big(X^{(t)}\big)}M^{(t)}\big) \bigg{)}\\
+    &=\operatorname{Tr}\big(X^{(t)}\big)\bigg{(}1-\varepsilon\exp(-\varepsilon)\big\langle\rho^{(t)},M^{(t)}\big\rangle\bigg{)}\\
+    &\le \operatorname{Tr}\big(X^{(t)} \big)\exp\bigg(-\varepsilon\exp(-\varepsilon)\big\langle\rho^{(t)},M^{(t)}\big\rangle \bigg).
+\end{aligned}</script><p>Apply this inequality recursively, thus we deduce that</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \operatorname{Tr}\big(X^{(T)} \big)&\le\operatorname{Tr}\big(X^{(0)}\big)\prod_{t=0}^{T-1}\exp\bigg(-\varepsilon\exp(-\varepsilon)\big\langle\rho^{(t)},M^{(t)}\big\rangle \bigg)\\
+    &=N\exp\bigg(-\varepsilon\exp(-\varepsilon)\sum_{t=0}^{T-1}\big\langle\rho^{(t)},M^{(t)}\big\rangle \bigg).
+\end{aligned}</script><p>Finally, we combine these two inequalities so we have</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    & \exp\bigg(-\varepsilon\lambda_{\min}\bigg(\sum_{t=0}^{T-1}M^{(k)} \bigg)\bigg)\le N\exp\bigg(-\varepsilon\exp(-\varepsilon)\sum_{t=0}^{T-1}\big\langle\rho^{(t)},M^{(t)}\big\rangle \bigg)\\
+    \Longleftrightarrow\quad& -\varepsilon\lambda_{\min}\bigg(\sum_{t=0}^{T-1}M^{(k)} \bigg)\le \ln N-\varepsilon\exp(-\varepsilon)\sum_{t=0}^{T-1}\big\langle\rho^{(t)},M^{(t)}\big\rangle\\
+    \Longleftrightarrow\quad& \lambda_{\min}\bigg(\sum_{t=0}^{T-1}M^{(k)} \bigg)\ge \exp(-\varepsilon)\sum_{t=0}^{T-1}\big\langle\rho^{(t)},M^{(t)}\big\rangle-\frac{\ln N}{\varepsilon}
+\end{aligned}</script></blockquote>
+<h4 id="4-2-1-Ignore-the-Error"><a href="#4-2-1-Ignore-the-Error" class="headerlink" title="4.2.1 Ignore the Error"></a>4.2.1 Ignore the Error</h4><p>We first analyze the accuracy when those computations such as exponentials and projections onto negative eigenspaces of matrices can be solved precisely.</p>
+<ul>
+<li><p>Case 1. Accept<br>Suppose that the algorithm accepts the input. For convenience, here we omit the superscript. Define</p>
+<script type="math/tex; mode=display">
+Q_a=\frac{2\rho_a}{\gamma+2\beta}\in\mathrm{Pos}(\mathcal{X}\otimes \mathcal{Y})</script><p>for $a\in\{0,1\}$, and define</p>
+<script type="math/tex; mode=display">
+\xi=\frac{\gamma\sigma+2\Delta_0\operatorname{Tr}_{\mathcal{Y}}(P_0\rho_0P_0)\Delta_0+2\Delta_1\operatorname{Tr}_{\mathcal{Y}}(P_1\rho_1P_1)\Delta_1}{\gamma+2\beta}\in\mathrm{D}(\mathcal{X}).</script><p>For each $a\in\{0,1\}$, since $\Delta_a\sigma\Delta_a$ is positive semidefinite, it holds that</p>
+<script type="math/tex; mode=display">
+-\Delta_a\operatorname{Tr}_{\mathcal{Y}}(P_a\rho_a P_a)\Delta_a\le \Delta_a\bigg(\frac{\gamma\sigma}{2}-\operatorname{Tr}_{\mathcal{Y}}(P_a\rho_aP_a) \bigg)\Delta_a.</script><p>According to the definition of $\Delta_a$, we have that</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \bigg(\frac{\gamma\sigma}{2}-\operatorname{Tr}_{\mathcal{Y}}(P_a\rho_aP_a) \bigg)(I_{\mathcal{X}}-\Delta_a)\ge 0.
+\end{aligned}</script><p>It implies that</p>
+<script type="math/tex; mode=display">
+\Delta_a\bigg(\frac{\gamma\sigma}{2}-\operatorname{Tr}_{\mathcal{Y}}(P_a\rho_aP_a) \bigg)\Delta_a=\bigg(\frac{\gamma\sigma}{2}- \operatorname{Tr}_{\mathcal{Y}}(P_a\rho_aP_a)\bigg)\Delta_a\le \frac{\gamma\sigma}{2}-\operatorname{Tr}_{\mathcal{Y}}(P_a\rho_aP_a).</script><p>Hence it holds that</p>
+<script type="math/tex; mode=display">
+\operatorname{Tr}_{\mathcal{Y}}(P_a\rho_aP_a)\le \frac{\gamma\sigma}{2}+\Delta_a\operatorname{Tr}_{\mathcal{Y}}(P_a\rho_aP_a)\Delta_a,</script><p>followed by</p>
+<script type="math/tex; mode=display">
+\operatorname{Tr}_{\mathcal{Y}}(P_aQ_aP_a)\le\frac{\gamma\sigma+2\Delta_a\operatorname{Tr}_{\mathcal{Y}}(P_a\rho_aP_a)\Delta_a}{\gamma+2\beta}\le \xi.</script><p>So $(Q_0,Q_1,\xi)$ is a feasible solution to the primal problem. Moreover, since $\beta\le \varepsilon$, we deduce that</p>
+<script type="math/tex; mode=display">
+\operatorname{Tr}\bigg(\frac{1}{2}Q_0+\frac{1}{2}Q_1 \bigg)=\frac{\operatorname{Tr}(\rho_0+\rho_1)}{\gamma+2\beta}=\frac{1}{\gamma+2\beta}>\frac{5}{8}.</script><p>Hence we can determine the input string is a yes-instance.</p>
+</li>
+<li><p>Case 2. Reject<br>For each $a\in\{0,1\}$, define</p>
+<script type="math/tex; mode=display">
+R_a=\frac{1+4\varepsilon}{T}\sum_{t=0}^{T-1}\frac{\Delta_a^{(t)}}{\beta^{(t)}}.</script><p>Once we prove the smallest eigenvalue of $P_a(R_a\otimes I_{\mathcal{Y}})P_a$ is not smaller than $1$, we know that $(R_0,R_1)$ is a feasible solution to the dual problem. It inspires us to apply the first inequality in <strong>LEMMA 2</strong>. We combine $R_0$ and $R_1$ by defining</p>
+<script type="math/tex; mode=display">
+M^{(t)}=\frac{\delta}{\beta^{(t)}}\begin{bmatrix}
+    P_0(\Delta_0\otimes I_{\mathcal{Y}})P_0 & 0\\
+    0 & P_1(\Delta_1\otimes I_{\mathcal{Y}})P_1
+\end{bmatrix}
+,\quad X^{(t)}=\begin{bmatrix}
+    X_0^{(t)} & 0\\
+    0 & X_1^{(t)}
+\end{bmatrix}
+,\quad \text{and}\quad
+\rho^{(t)}=\begin{bmatrix}
+    \rho_{0}^{(t)} & 0\\
+    0 & \rho_{1}^{(t)}
+\end{bmatrix}</script><p>for each $t\in\{0,\cdots,T-1\}$. Since $\beta^{(t)}\ge \varepsilon$, it’s easy to verify that $0\le M^{(t)}\le I$. According to <strong>LEMMA 2</strong>, we have that</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \lambda_{\min}\bigg(\sum_{t=0}^{T-1}M^{(t)} \bigg)&\ge \exp(-\varepsilon)\sum_{t=0}^{T}\bigg\langle\rho^{(t)},M^{(t)}\bigg\rangle-\frac{\ln 2M^2}{\varepsilon}\\
+    &=\exp(-\varepsilon)\delta T-\frac{\ln 2M^2}{\varepsilon}.
+\end{aligned}</script><p>Moreover, we conclude that</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \lambda_{\min}\begin{bmatrix}
+    P_0(R_0\otimes I_{\mathcal{Y}})P_0 & 0\\
+    0 & P_1(R_1\otimes I_{\mathcal{Y}})P_1
+\end{bmatrix}
+&\ge (1+4\varepsilon)\bigg(\exp(-\varepsilon)-\frac{\ln 2M^2}{\varepsilon\delta T} \bigg)\\
+&\ge (1+4\varepsilon )\bigg(1-\varepsilon-\frac{\ln M^4}{\varepsilon\delta\frac{4\ln M}{\varepsilon^2\delta}} \bigg)\\
+&=(1+4\varepsilon)(1-2\varepsilon) \ge 1.
+\end{aligned}</script><p>It is sufficient to deduce $P_a(\Delta_a\otimes I_{\mathcal{V}})P_a\ge I_{\mathcal{X}}\otimes I_{\mathcal{Y}}$, so $(R_0,R_1)$ is a feasible solution to the dual problem.<br>Then we evaluate the value of this solution. The proof will make use of the fact that the spectral norm of a Hermitian operator is its maximal eigenvalue. Define</p>
+<script type="math/tex; mode=display">
+M^{(t)}=\frac{\varepsilon}{2\beta^{(t)}}\big(\Delta_0^{(t)}+\Delta_1^{(t)} \big),</script><p>and apply the second inequality in <strong>LEMMA 2</strong>, so that</p>
+<script type="math/tex; mode=display">
+\lambda_{\max}\bigg(\sum_{t=0}^{T-1}M^{(t)} \bigg)\le \exp(\varepsilon)\sum_{t=0}^{T-1}\bigg\langle\sigma^{(t)},M^{(t)}\bigg\rangle+\frac{\ln M}{\varepsilon}.</script><p>Note that</p>
+<script type="math/tex; mode=display">
+\bigg(\frac{\gamma\sigma^{(t)}}{2}-\operatorname{Tr}_{\mathcal{Y}}(P_a\rho_a^{(t)}P_a) \bigg)\Delta_a^{(t)}\le 0,</script><p>so we have</p>
+<script type="math/tex; mode=display">
+\frac{\gamma}{2}\bigg\langle\sigma^{(t)},\Delta_a^{(t)}\bigg\rangle\le \bigg\langle\operatorname{Tr}_{\mathcal{Y}}(P_a\rho_a^{(t)}P_a),\Delta_a^{(t)}\bigg\rangle=\bigg\langle P_a\rho_a^{(t)}P_a,\Delta_a^{(t)}\otimes I_{\mathcal{Y}} \bigg\rangle,</script><p>which implies that $\langle \sigma^{(t)},M^{(t)}\rangle\le \varepsilon/\gamma$. Thus we can obtain an upper-bound</p>
+<script type="math/tex; mode=display">
+\lambda_{\max}\bigg(\sum_{t=0}^{T-1}M^{(t)} \bigg)\le \frac{\varepsilon\exp(\varepsilon)T}{\gamma}+\frac{\ln M}{\varepsilon}.</script><p>Now we can evaluate the value of the solution, that is</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \|\frac{1}{2}R_0+\frac{1}{2}R_1\|&=\frac{1+4\varepsilon}{\varepsilon T}\lambda_{\max}\bigg(\sum_{t=0}^{T-1}M^{(t)} \bigg)\\
+    &\le (1+4\varepsilon)\bigg(\frac{\exp \varepsilon}{\gamma}+\frac{\ln M}{\varepsilon^2\frac{4\ln M}{\varepsilon^2\delta}} \bigg)\\
+    &=(1+4\varepsilon)\bigg(\frac{\exp\varepsilon}{\gamma}+\frac{\delta}{4} \bigg)<\frac{7}{8}.
+\end{aligned}</script><p>Hence we can determine the input string is a no-instance.</p>
+</li>
+</ul>
+<h3 id="4-2-2-Fault-Tolerance"><a href="#4-2-2-Fault-Tolerance" class="headerlink" title="4.2.2 Fault Tolerance"></a>4.2.2 Fault Tolerance</h3><p>Recall that we cannot compute exponentials and projections onto negative eigenspaces of some certain matrices exactly, we must consider the error appearing in computation now. Luckily, our algorithm is highly fault-tolerant because the algorithm itself is an approximation algorithm. We just need to do a little bit of adjustment in the analysis above.</p>
+<h2 id="5-Summary"><a href="#5-Summary" class="headerlink" title="5. Summary"></a>5. Summary</h2><p>We first transform quantum interactive systems to quantum Arthur-Merlin games, and then we use semidefinite programming to describe this game. Thus we use the matrix multiplicative weight algorithm, which can be implemented parallelly, to approach the optimal value of this semidefinite program. According to the bound of the optimal value, we can determine whether the input string is yes-instance or not.</p>
+<p>The main result of this paper is $\mathbf{QIP}=\mathbf{PSPACE}=\mathbf{IP}$, which implies that neither qubits nor quantum computational models can improve the computational ability of interactive proof systems. We can see that even quantum computation has some limitations.</p>
+<p>From my point of view, the most interesting part of this paper is that we don’t care about what the optimal value of this semidefinite program is. In fact, finding a lower-bound or an upper-bound for it is enough. The analysis is the part that is most tough to understand because there are lots of matrix inequalities, which I’m unfamiliar with.</p>
+<h2 id="6-Reference"><a href="#6-Reference" class="headerlink" title="6. Reference"></a>6. Reference</h2><div id="RZSW11"></div>
+
+<ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/abs/10.1145/2049697.2049704">Jain R, Ji Z, Upadhyay S, et al. Qip= pspace[J]. Journal of the ACM (JACM), 2011, 58(6): 1-27.</a></li>
+</ul>
+<div id="BM88"></div>
+
+<ul>
+<li>[2] <a target="_blank" rel="noopener" href="https://core.ac.uk/download/pdf/82807618.pdf">Babai L, Moran S. Arthur-Merlin games: a randomized proof system, and a hierarchy of complexity classes[J]. Journal of Computer and System Sciences, 1988, 36(2): 254-276.</a></li>
+</ul>
+<div id="GS86"></div>
+
+<ul>
+<li>[3] <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/pdf/10.1145/12130.12137">Goldwasser S, Sipser M. Private coins versus public coins in interactive proof systems[C]//Proceedings of the eighteenth annual ACM symposium on Theory of computing. 1986: 59-68.</a></li>
+</ul>
+<div id="S96"></div>
+
+<ul>
+<li>[4] <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/pdf/10.1145/230514.571645">Sipser M. Introduction to the Theory of Computation[J]. ACM Sigact News, 1996, 27(1): 27-29.</a></li>
+</ul>
+<div id="S92"></div>
+
+<ul>
+<li>[5] <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/abs/10.1145/146585.146609">Shamir A. Ip= pspace[J]. Journal of the ACM (JACM), 1992, 39(4): 869-877.</a></li>
+</ul>
+<div id="W03"></div>
+
+<ul>
+<li>[6] <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0304397501003759">Watrous J. PSPACE has constant-round quantum interactive proof systems[J]. Theoretical Computer Science, 2003, 292(3): 575-588.</a></li>
+</ul>
+<div id="MW05"></div>
+
+<ul>
+<li>[7] <a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1007/s00037-005-0194-x">Marriott C, Watrous J. Quantum arthur–merlin games[J]. computational complexity, 2005, 14: 122-152.</a></li>
+</ul>
+<div id="KW00"></div>
+
+<ul>
+<li>[8] <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/pdf/10.1145/335305.335387">Kitaev A, Watrous J. Parallelization, amplification, and exponential time simulation of quantum interactive proof systems[C]//Proceedings of the thirty-second annual ACM symposium on Theory of computing. 2000: 608-617.</a></li>
+</ul>
+<div id="B77"></div>
+
+<ul>
+<li>[9] <a target="_blank" rel="noopener" href="https://epubs.siam.org/doi/abs/10.1137/0206054">Borodin A. On relating time and space to size and depth[J]. SIAM journal on computing, 1977, 6(4): 733-744.</a></li>
+</ul>
+<div id="BFK86"></div>
+
+<ul>
+<li>[10] <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/pdf/10.1145/12130.12165">Ben-Or M, Feig E, Kozen D, et al. A fast parallel algorithm for determining all roots of a polynomial with real roots[C]//Proceedings of the eighteenth annual ACM symposium on Theory of computing. 1986: 340-349.</a></li>
+</ul>
+<div id="C75"></div>
+
+<ul>
+<li>[11] <a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/4567852">Csanky L. Fast parallel matrix inversion algorithms[C]//16th Annual Symposium on Foundations of Computer Science (sfcs 1975). IEEE, 1975: 11-12.</a></li>
+</ul>
+<div id="BR97"></div>
+
+<ul>
+<li>[12] <a target="_blank" rel="noopener" href="https://books.google.com/books?hl=zh-CN&amp;lr=&amp;id=lh4BCAAAQBAJ&amp;oi=fnd&amp;pg=PA1&amp;dq=Matrix+Analysis&amp;ots=Xn9z4xtf0O&amp;sig=jaJOT_rX90VikjuQSc_8TNLUlsI#v=onepage&amp;q=Matrix%20Analysis&amp;f=false">Bhatia R. Matrix analysis[M]. Springer Science &amp; Business Media, 2013.</a></li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>A Summary of $\mathbf{QIP}=\mathbf{PSPACE}$</p><p><a href="https://ziwuvalley.github.io/Theoretical-Computer-Science/QIP-PSPACE/">https://ziwuvalley.github.io/Theoretical-Computer-Science/QIP-PSPACE/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2024-01-05</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2024-01-05</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Quantum-Computing/">Quantum Computing</a><a class="link-muted mr-2" rel="tag" href="/tags/Complexity-Theory/">Complexity Theory</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/Introduction/Introduction/"><span class="level-item">Welcome to my blog!</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/img/lhc.svg" alt="ZiwuValley"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">ZiwuValley</p><p class="is-size-6 is-block">an undergraduate at SJTU</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Minhang, Shanghai</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">2</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/ziwuvalley" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/ziwuvalley"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com/VZiwu28855"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#1-Background"><span class="level-left"><span class="level-item">1. Background</span></span></a></li><li><a class="level is-mobile" href="#2-Preliminaries"><span class="level-left"><span class="level-item">2. Preliminaries</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#2-1-Linear-Algebra"><span class="level-left"><span class="level-item">2.1 Linear Algebra</span></span></a></li><li><a class="level is-mobile" href="#2-2-Quantum-Information"><span class="level-left"><span class="level-item">2.2 Quantum Information</span></span></a></li><li><a class="level is-mobile" href="#2-3-Quantum-Interactive-Proof-Systems-and-Single-Coin-Arthur-Merlin-Games"><span class="level-left"><span class="level-item">2.3 Quantum Interactive Proof Systems and Single-Coin Arthur-Merlin Games</span></span></a></li><li><a class="level is-mobile" href="#2-4-Bounded-Depth-Circuits-and-the-Complexity-Classes-mathbf-NC-and-mathbf-NC-poly"><span class="level-left"><span class="level-item">2.4 Bounded-Depth Circuits and the Complexity Classes $\mathbf{NC}$ and $\mathbf{NC}(poly)$</span></span></a></li><li><a class="level is-mobile" href="#2-5-Semidefinite-Programs"><span class="level-left"><span class="level-item">2.5 Semidefinite Programs</span></span></a></li></ul></li><li><a class="level is-mobile" href="#3-The-Main-Idea"><span class="level-left"><span class="level-item">3. The Main Idea</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#3-1-Semidefinite-Programs-for-Single-Coin-Quantum-Arthur-Merlin-Games"><span class="level-left"><span class="level-item">3.1 Semidefinite Programs for Single-Coin Quantum Arthur-Merlin Games</span></span></a></li><li><a class="level is-mobile" href="#3-2-Matrix-Multiplicative-Weight-Algorithm-for-Semidefinite-Programs"><span class="level-left"><span class="level-item">3.2 Matrix Multiplicative Weight Algorithm for Semidefinite Programs</span></span></a></li></ul></li><li><a class="level is-mobile" href="#4-Analysis"><span class="level-left"><span class="level-item">4. Analysis</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#4-1-Complexity"><span class="level-left"><span class="level-item">4.1 Complexity</span></span></a></li><li><a class="level is-mobile" href="#4-2-Accuracy"><span class="level-left"><span class="level-item">4.2 Accuracy</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#4-2-0-Some-Useful-Theorems-and-Lemmas"><span class="level-left"><span class="level-item">4.2.0 Some Useful Theorems and Lemmas</span></span></a></li><li><a class="level is-mobile" href="#4-2-1-Ignore-the-Error"><span class="level-left"><span class="level-item">4.2.1 Ignore the Error</span></span></a></li></ul></li><li><a class="level is-mobile" href="#4-2-2-Fault-Tolerance"><span class="level-left"><span class="level-item">4.2.2 Fault Tolerance</span></span></a></li></ul></li><li><a class="level is-mobile" href="#5-Summary"><span class="level-left"><span class="level-item">5. Summary</span></span></a></li><li><a class="level is-mobile" href="#6-Reference"><span class="level-left"><span class="level-item">6. Reference</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">Links</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://lcuter.gitee.io/" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Former Blog</span></span><span class="level-right"><span class="level-item tag">lcuter.gitee.io</span></span></a></li></ul></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/Introduction/"><span class="level-start"><span class="level-item">Introduction</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Theoretical-Computer-Science/"><span class="level-start"><span class="level-item">Theoretical Computer Science</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-01-05T07:00:15.000Z">2024-01-05</time></p><p class="title"><a href="/Theoretical-Computer-Science/QIP-PSPACE/">A Summary of $\mathbf{QIP}=\mathbf{PSPACE}$</a></p><p class="categories"><a href="/categories/Theoretical-Computer-Science/">Theoretical Computer Science</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-12-24T14:42:13.000Z">2023-12-24</time></p><p class="title"><a href="/Introduction/Introduction/">Welcome to my blog!</a></p><p class="categories"><a href="/categories/Introduction/">Introduction</a></p></div></article></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Complexity-Theory/"><span class="tag">Complexity Theory</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Quantum-Computing/"><span class="tag">Quantum Computing</span><span class="tag">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/lhc.svg" alt="ZiwuValley&#039;s Blog" height="28"></a><p class="is-size-7"><span>&copy; 2024 ZiwuValley's Blog</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
